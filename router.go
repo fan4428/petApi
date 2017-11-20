@@ -1,7 +1,7 @@
 package main
 
 import (
-	"vconnectservice/controllers"
+	"petApi/controllers"
 
 	"github.com/gin-gonic/gin"
 )
@@ -12,7 +12,8 @@ func initRouter() *gin.Engine {
 
 	v1 := router.Group("api/v1")
 	{
-		v1.GET("/users", controllers.Insert)
+		v1.GET("/users", controllers.GetUserByname)
+		v1.GET("/test", controllers.Test)
 
 	}
 

@@ -1,52 +1,33 @@
 package data
 
 import (
-	"encoding/json"
-	"os"
+	"petApi/models"
+
+	"gopkg.in/mgo.v2/bson"
 )
 
 //F fan
-type F struct {
-	A string
-	B string
-}
 
-//Person fan
-type Person struct {
-	Name   string
-	Mobile string
-	Lis    F
-}
+// //AdminLogin 宠物后台系统登录
+// func AdminLogin(user string, pwd string) {
+// 	c := db.C("user")
 
-type ColorGroup struct {
-	ID     int
-	Name   string
-	Colors []string
-}
+// 	err := c.Find(b).One(bson.M{"name": "fan"})
+// 	defer db.Session.Close()
 
-//Insert fan
-func Insrert() {
+// }
+
+// GetUserByName 通过名称获取User用户
+func GetUserByName(userName string, result chan []models.User) {
 	var db = GetDB("ApplicationCentre")
 	defer db.Session.Close()
+	c := db.C("user")
 
-	p := Person{}
-	p.Lis = F{}
-	p.Mobile = "321"
-	p.Name = "a"
-	err := db.C("fan").Insert(p)
-
-	group := ColorGroup{
-		ID:     1,
-		Name:   "Reds",
-		Colors: []string{"Crimson", "Red", "Ruby", "Maroon"},
-	}
-	group.ID = 3
+	var uModel []models.User
+	err := c.Find(bson.M{"name": userName}).All(&uModel)
 	if err != nil {
-
+		panic(err)
 	}
-	b, err1 := json.Marshal(group)
-	if err1 != nil {
+	result <- uModel
 
-	}
-	os.Stdout.Write(b)
 }
