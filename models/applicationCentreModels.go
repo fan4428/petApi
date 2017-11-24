@@ -8,3 +8,10 @@ type User struct {
 	TermFlag  bool   `bson:"termflag"`
 	AdminRole string `bson:"adminrole"`
 }
+
+//Result fanhui
+type Result struct {
+	Code    int
+	Message string
+	Data    bool
+}

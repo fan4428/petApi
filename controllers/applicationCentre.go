@@ -4,7 +4,7 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"fmt"
-	data "petApi/data"
+	"petApi/data"
 
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/blowfish"

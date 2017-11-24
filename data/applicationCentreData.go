@@ -29,5 +29,4 @@ func GetUserByName(userName string, result chan []models.User) {
 		panic(err)
 	}
 	result <- uModel
-
 }
