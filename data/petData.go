@@ -1,19 +1,10 @@
 package data
 
 import (
+	"petApi/models"
+
 	"gopkg.in/mgo.v2/bson"
 )
-
-//F fan
-
-// //AdminLogin 宠物后台系统登录
-// func AdminLogin(user string, pwd string) {
-// 	c := db.C("user")
-
-// 	err := c.Find(b).One(bson.M{"name": "fan"})
-// 	defer db.Session.Close()
-
-// }
 
 // InsertTest 通过名称获取User用户
 func InsertTest(name string, gender string, email string, hukou string,
@@ -34,4 +25,17 @@ func InsertTest(name string, gender string, email string, hukou string,
 		panic(err)
 	}
 
+}
+
+//GetAllHospital 获取全部所有医院
+func GetAllHospital() ([]models.Hospital, error) {
+	var db = GetDB("Pet")
+	c := db.C("hospital")
+
+	defer db.Session.Close()
+
+	var hospitalModel []models.Hospital
+	err := c.Find(bson.M{}).All(&hospitalModel)
+
+	return hospitalModel, err
 }

@@ -18,12 +18,20 @@ func initRouter() *gin.Engine {
 		log.Println("all")
 	})
 
+	//Pet接口
+	pet := router.Group("api/pet")
+	{
+		pet.GET("/hospital", controllers.GetAllHospital)
+
+	}
+	//ceshi
 	v1 := router.Group("api/v1")
 	{
 		v1.GET("/users", controllers.GetUserByname)
 		//	v1.GET("/test", controllers.Test)
 
 	}
+	//测试接口
 	test := router.Group("api/test")
 	{
 

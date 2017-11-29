@@ -12,6 +12,7 @@ func GetDB(dbName string) *mgo.Database {
 	dbPath := conf.GetValue("mongo", "dbPath")
 
 	session, err := mgo.Dial(dbPath)
+	session.SetMode(mgo.Monotonic, true)
 	if err != nil {
 		panic(err)
 	}
