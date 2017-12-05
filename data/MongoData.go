@@ -8,13 +8,13 @@ import (
 //GetDB 获取数据库
 func GetDB(dbName string) *mgo.Database {
 
-	conf := goini.SetConfig("./config/conf.ini")
-	dbPath := conf.GetValue("mongo", "dbPath")
+	conf1 := goini.SetConfig("./config/conf.ini")
+	dbPath1 := conf1.GetValue("mongo", "dbPath")
 
-	session, err := mgo.Dial(dbPath)
+	session, errDB := mgo.Dial(dbPath1)
 	session.SetMode(mgo.Monotonic, true)
-	if err != nil {
-		panic(err)
+	if errDB != nil {
+		panic(errDB)
 	}
 	db := session.DB(dbName)
 

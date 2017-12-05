@@ -16,12 +16,19 @@ func initRouter() *gin.Engine {
 		c.Header("content-type", "application/json")
 
 		log.Println("all")
+		c.Next()
 	})
 
 	//Pet接口
-	pet := router.Group("api/pet")
+	pet := router.Group("Petapi/v1")
 	{
+		pet.OPTIONS("/insertbespeak", func(c *gin.Context) {
+			c.JSON(200, "")
+		})
 		pet.GET("/hospital", controllers.GetAllHospital)
+		pet.GET("/getdoctorbyid", controllers.GetDoctorByID)
+		pet.POST("/insertbespeak", controllers.InsertBespeak)
+		pet.POST("/findBespeak", controllers.FindBespeak)
 
 	}
 	//ceshi

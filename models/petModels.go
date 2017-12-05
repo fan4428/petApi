@@ -1,6 +1,10 @@
 package models
 
-import "gopkg.in/mgo.v2/bson"
+import (
+	"time"
+
+	"gopkg.in/mgo.v2/bson"
+)
 
 //Hospital 医院包含职位
 type Hospital struct {
@@ -25,6 +29,24 @@ type Department struct {
 type Doctor struct {
 	ID         bson.ObjectId `bson:"_id"`
 	DoctorName string        `bson:"doctorName"`
+}
+
+//Bespeak 预约表
+type Bespeak struct {
+	ID           bson.ObjectId `bson:"_id"`
+	MasterName   string        `bson:"masterName"`
+	PetName      string        `bson:"petName"`
+	Mobile       string        `bson:"mobile"`
+	ApplyDate    string        `bson:"applyDate"`
+	ApplyTime    string        `bson:"applyTime"`
+	HospitalID   string        `bson:"hospitalId"`
+	HospitalName string        `bson:"hospitalName"`
+	DepID        string        `bson:"depId"`
+	DepName      string        `bson:"depName"`
+	DoctorID     string        `bson:"doctorId"`
+	DoctorName   string        `bson:"doctorName"`
+	State        int           `bson:"state"`
+	CreateDate   time.Time     `bson:"createDate"`
 }
 
 // "_id" : ObjectId("5a1cc2be080e9befff6bcbec"),

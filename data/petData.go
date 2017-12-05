@@ -29,13 +29,50 @@ func InsertTest(name string, gender string, email string, hukou string,
 
 //GetAllHospital 获取全部所有医院
 func GetAllHospital() ([]models.Hospital, error) {
-	var db = GetDB("Pet")
-	c := db.C("hospital")
+	var dbPet = GetDB("Pet")
+	cHospital := dbPet.C("hospital")
 
-	defer db.Session.Close()
+	defer dbPet.Session.Close()
 
 	var hospitalModel []models.Hospital
-	err := c.Find(bson.M{}).All(&hospitalModel)
+	errPet := cHospital.Find(bson.M{}).All(&hospitalModel)
 
-	return hospitalModel, err
+	return hospitalModel, errPet
+}
+
+//GetDoctorByID 通过doctorId获取医生
+func GetDoctorByID(doctorID string) (models.Doctor, error) {
+
+	var bsonDoctorID = bson.ObjectIdHex(doctorID)
+
+	var dbPet = GetDB("Pet")
+	cHospital := dbPet.C("doctor")
+	defer dbPet.Session.Close()
+	var doctorModel models.Doctor
+	errPet := cHospital.Find(bson.M{"_id": bsonDoctorID}).One(&doctorModel)
+
+	return doctorModel, errPet
+}
+
+//InsertBespeak 添加预约
+func InsertBespeak(bespeakModel models.Bespeak) error {
+	var dbPet = GetDB("Pet")
+	cBespeak := dbPet.C("bespeak")
+	defer dbPet.Session.Close()
+
+	errPet := cBespeak.Insert(bespeakModel)
+
+	return errPet
+}
+
+//FindBespeak 查找预约
+func FindBespeak(applyDate string, skip int, limit int) ([]models.Bespeak, error) {
+	var dbPet = GetDB("Pet")
+	cBespeak := dbPet.C("bespeak")
+	var bespeakMode []models.Bespeak
+
+	var bsonM = bson.M{"applyDate": applyDate}
+	pskip := (skip - 1) * limit
+	errPet := cBespeak.Find(bsonM).Skip(pskip).Limit(limit).All(&bespeakMode)
+	return bespeakMode, errPet
 }
