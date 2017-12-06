@@ -1,12 +1,16 @@
 package models
 
+import (
+	"gopkg.in/mgo.v2/bson"
+)
+
 //User fan
 type User struct {
-	ID        string `bson:"_id"`
-	Name      string `bson:"name"`
-	Password  string `bson:"password"`
-	TermFlag  bool   `bson:"termflag"`
-	AdminRole string `bson:"adminrole"`
+	ID        bson.ObjectId `bson:"_id"`
+	Name      string        `bson:"name"`
+	Password  string        `bson:"password"`
+	TermFlag  bool          `bson:"termflag"`
+	AdminRole string        `bson:"AdminRole"`
 }
 
 //Result fanhui

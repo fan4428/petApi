@@ -29,6 +29,7 @@ func initRouter() *gin.Engine {
 		pet.GET("/getdoctorbyid", controllers.GetDoctorByID)
 		pet.POST("/insertbespeak", controllers.InsertBespeak)
 		pet.POST("/findBespeak", controllers.FindBespeak)
+		pet.POST("/emailLogin", controllers.Login)
 
 	}
 	//ceshi

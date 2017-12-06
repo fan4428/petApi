@@ -62,6 +62,19 @@ func InsertBespeak(c *gin.Context) {
 	c.JSON(200, true)
 }
 
+//Login 登录
+func Login(c *gin.Context) {
+
+	email := c.PostForm("email")
+	password := c.PostForm("password")
+
+	userModel, err := data.EmailLogin(email, password)
+	if err != nil {
+		fmt.Println(err)
+	}
+	c.JSON(200, userModel)
+}
+
 //FindBespeak 查询预约
 func FindBespeak(c *gin.Context) {
 

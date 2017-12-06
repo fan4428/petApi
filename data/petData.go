@@ -1,6 +1,8 @@
 package data
 
 import (
+	b64 "encoding/base64"
+	"fmt"
 	"petApi/models"
 
 	"gopkg.in/mgo.v2/bson"
@@ -75,4 +77,25 @@ func FindBespeak(applyDate string, skip int, limit int) ([]models.Bespeak, error
 	pskip := (skip - 1) * limit
 	errPet := cBespeak.Find(bsonM).Skip(pskip).Limit(limit).All(&bespeakMode)
 	return bespeakMode, errPet
+}
+
+//EmailLogin 登录系统
+func EmailLogin(email string, password string) (models.User, error) {
+	var dbPet = GetDB("ApplicationCentre")
+	cUser := dbPet.C("user")
+
+	text := []byte(password)
+	key := []byte("sfe023f_9fd&fwfl")
+	dPassword, derr := Encrypt(text, key)
+	uEnc := b64.StdEncoding.EncodeToString([]byte(dPassword))
+	fmt.Println("uEncerr:", uEnc)
+
+	if derr != nil {
+		panic(derr)
+	}
+	var userModel models.User
+	var bsonM = bson.M{"loginId": email}
+
+	errUser := cUser.Find(&bsonM).One(&userModel)
+	return userModel, errUser
 }

@@ -7,7 +7,7 @@ import (
 	"fmt"
 )
 
-//Encrypt AesCBC 加密
+//Encrypt 加密
 func Encrypt(plantText, key []byte) ([]byte, error) {
 	block, err := aes.NewCipher(key) //选择加密算法
 	if err != nil {
@@ -24,14 +24,14 @@ func Encrypt(plantText, key []byte) ([]byte, error) {
 	return ciphertext, nil
 }
 
-//Dncrypt AesCBC 解密
+//Dncrypt 解密
 func Dncrypt(plantText, key []byte) ([]byte, error) {
 	block, err := aes.NewCipher(key) //选择加密算法
 	if err != nil {
 		return nil, err
 	}
 	fmt.Println("block:", block)
-	// plantText = PKCS7Padding(plantText, block.BlockSize())
+	//plantText = PKCS7Padding(plantText, block.BlockSize())
 	blockSize := block.BlockSize()
 
 	blockModel := cipher.NewCBCDecrypter(block, key[:blockSize])
@@ -42,7 +42,7 @@ func Dncrypt(plantText, key []byte) ([]byte, error) {
 	return ciphertext, nil
 }
 
-//PKCS7Padding PKCS7规范
+//PKCS7Padding pkc模式
 func PKCS7Padding(ciphertext []byte, blockSize int) []byte {
 	padding := blockSize - len(ciphertext)%blockSize
 	padtext := bytes.Repeat([]byte{byte(padding)}, padding)
