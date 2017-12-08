@@ -79,6 +79,19 @@ func FindBespeak(applyDate string, skip int, limit int) ([]models.Bespeak, error
 	return bespeakMode, errPet
 }
 
+//FindBespeakFullcalendar 查找一年的所有预约
+func FindBespeakFullcalendar(sDate string, eDate string, hospitalID string) ([]models.Bespeak, error) {
+	var dbPet = GetDB("Pet")
+	cBespeak := dbPet.C("bespeak")
+	var bespeakMode []models.Bespeak
+
+	var bsonM = bson.M{"hospitalId": hospitalID, "applyDate": bson.M{"$gte": sDate, "$lte": eDate}}
+
+	errPet := cBespeak.Find(bsonM).All(&bespeakMode)
+	return bespeakMode, errPet
+
+}
+
 //EmailLogin 登录系统
 func EmailLogin(email string, password string) (models.User, error) {
 	var dbPet = GetDB("ApplicationCentre")
@@ -94,7 +107,7 @@ func EmailLogin(email string, password string) (models.User, error) {
 		panic(derr)
 	}
 	var userModel models.User
-	var bsonM = bson.M{"loginId": email}
+	var bsonM = bson.M{"loginId": email, "password": uEnc}
 
 	errUser := cUser.Find(&bsonM).One(&userModel)
 	return userModel, errUser

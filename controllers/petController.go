@@ -96,3 +96,19 @@ func FindBespeak(c *gin.Context) {
 	}
 	c.JSON(200, bespeakModels)
 }
+
+//FindBespeakFullcalenar 查询预约
+func FindBespeakFullcalenar(c *gin.Context) {
+
+	// var bespeakModels models.Bespeak
+
+	sDate := c.PostForm("sDate")
+	eDate := c.PostForm("eDate")
+	hid := c.PostForm("hid")
+
+	bespeakModels, err := data.FindBespeakFullcalendar(sDate, eDate, hid)
+	if err != nil {
+		fmt.Println(err)
+	}
+	c.JSON(200, bespeakModels)
+}
