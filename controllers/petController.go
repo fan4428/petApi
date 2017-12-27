@@ -19,13 +19,7 @@ func GetAllHospital(c *gin.Context) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	// for i := 0; i < result.length; i++ {
-	// 	for j := 0; j < result[i].Department; j++ {
-	// 		result[i].Department[j].Doctor
-	// 	}
 
-	// }
-	// doctorResult,err:=data.GetDoctorByID()
 	c.JSON(200, result)
 }
 

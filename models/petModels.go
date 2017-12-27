@@ -14,6 +14,7 @@ type Hospital struct {
 	Department     []Department  `bson:"department"`
 	State          int           `bson:"state"`
 	Address        string        `bson:"address"`
+	Doctor         []Doctor      `bson:"doctor"`
 }
 
 //Department 职位包含doctor数组oid
@@ -29,6 +30,7 @@ type Department struct {
 type Doctor struct {
 	ID         bson.ObjectId `bson:"_id"`
 	DoctorName string        `bson:"doctorName"`
+	Remark     string        `bson:"Remark"`
 }
 
 //Bespeak 预约表
