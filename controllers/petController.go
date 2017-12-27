@@ -1,10 +1,12 @@
 package controllers
 
 import (
+	b64 "encoding/base64"
 	"fmt"
 	"petApi/data"
 	"petApi/models"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -72,6 +74,16 @@ func Login(c *gin.Context) {
 	if err != nil {
 		fmt.Println(err)
 	}
+	if userModel.Name != "" {
+		var token = string(userModel.ID) + ":" + userModel.Name + ":" + time.Now().Format("2006-01-02 15:04:05")
+		text := []byte(token)
+		key := []byte("sfe023f_9fd&fwfl")
+		dToken, derr := data.Encrypt(text, key)
+		if derr != nil {
+			panic(derr)
+		}
+		userModel.Token = b64.StdEncoding.EncodeToString([]byte(dToken))
+	}
 	c.JSON(200, userModel)
 }
 
@@ -111,4 +123,27 @@ func FindBespeakFullcalenar(c *gin.Context) {
 		fmt.Println(err)
 	}
 	c.JSON(200, bespeakModels)
+}
+
+//ValiDateToken 验证token
+func ValiDateToken(c *gin.Context) {
+	token := c.PostForm("token")
+	token = strings.Replace(token, " ", "+", -1)
+	decodeBytes, err := b64.StdEncoding.DecodeString(token)
+	if err != nil {
+		panic(err)
+	}
+	key := []byte("sfe023f_9fd&fwfl")
+	byteToken, derr := data.Dncrypt(decodeBytes, key)
+	if derr != nil {
+		panic(derr)
+	}
+	strToken := string(byteToken)
+	s := strings.Split(strToken, ":")
+	if len(s) >= 3 {
+		c.JSON(200, "yes")
+	} else {
+		c.JSON(200, "no")
+	}
+
 }

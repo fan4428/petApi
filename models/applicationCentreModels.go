@@ -11,6 +11,7 @@ type User struct {
 	Password  string        `bson:"password"`
 	TermFlag  bool          `bson:"termflag"`
 	AdminRole string        `bson:"AdminRole"`
+	Token     string
 }
 
 //Result fanhui

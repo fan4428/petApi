@@ -31,6 +31,7 @@ func initRouter() *gin.Engine {
 		pet.POST("/findBespeak", controllers.FindBespeak)
 		pet.POST("/emailLogin", controllers.Login)
 		pet.POST("/findBespeakFullcalenar", controllers.FindBespeakFullcalenar)
+		pet.POST("/ValiDateToken", controllers.ValiDateToken)
 
 	}
 	//ceshi
