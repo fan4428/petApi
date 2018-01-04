@@ -36,6 +36,7 @@ func GetDoctorByID(c *gin.Context) {
 //InsertBespeak 添加预约
 func InsertBespeak(c *gin.Context) {
 	var bespeakModels models.Bespeak
+	var code = c.PostForm("code")
 	t := time.Now()
 	bespeakModels.ID = bson.NewObjectId()
 	bespeakModels.MasterName = c.PostForm("masterName")
@@ -51,6 +52,7 @@ func InsertBespeak(c *gin.Context) {
 	bespeakModels.DoctorName = c.PostForm("doctorName")
 	bespeakModels.State = 0
 	bespeakModels.CreateDate = t
+	bespeakModels.OpenId = data.GetOpenId("wxf0e257ada269dd09", "9e45db58aea6e7f61e6dc9a53f35f81a", code)
 	err := data.InsertBespeak(bespeakModels)
 	if err != nil {
 		fmt.Println(err)
@@ -58,12 +60,18 @@ func InsertBespeak(c *gin.Context) {
 	c.JSON(200, true)
 }
 
+// type KDRespBody struct {
+// 	Errcode string `json:"email"`
+// }
+
 //Login 登录
 func Login(c *gin.Context) {
-
+	// var reqInfo KDRespBody
+	// err := c.BindJSON(&reqInfo)
+	fan := c.Param("email")
 	email := c.PostForm("email")
 	password := c.PostForm("password")
-
+	fmt.Println(fan)
 	userModel, err := data.EmailLogin(email, password)
 	if err != nil {
 		fmt.Println(err)
@@ -139,5 +147,19 @@ func ValiDateToken(c *gin.Context) {
 	} else {
 		c.JSON(200, "no")
 	}
+
+}
+
+//GetMyBespeak 获取我的预约
+func GetMyBespeak(c *gin.Context) {
+	code := c.PostForm("code")
+	openid := data.GetOpenId("wxf0e257ada269dd09", "9e45db58aea6e7f61e6dc9a53f35f81a", code)
+	//openid = "ohVxV0wvfMjBkN3AMWbOgM6UzEuM"
+	bespeakList, derr := data.GetMyBespeak(openid)
+	if derr != nil {
+		panic(derr)
+	}
+
+	c.JSON(200, bespeakList)
 
 }

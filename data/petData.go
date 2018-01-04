@@ -42,6 +42,19 @@ func GetAllHospital() ([]models.Hospital, error) {
 	return hospitalModel, errPet
 }
 
+//GetAllHospitalByID 通过id获取医院
+func GetAllHospitalByID(hid string) (models.Hospital, error) {
+	var dbPet = GetDB("Pet")
+	cHospital := dbPet.C("hospital")
+	ohid := bson.ObjectIdHex(hid)
+	defer dbPet.Session.Close()
+
+	var hospitalModel models.Hospital
+	errPet := cHospital.Find(bson.M{"_id": ohid}).One(&hospitalModel)
+
+	return hospitalModel, errPet
+}
+
 //GetDoctorByID 通过doctorId获取医生
 func GetDoctorByID(doctorID string) (models.Doctor, error) {
 
@@ -62,7 +75,7 @@ func InsertBespeak(bespeakModel models.Bespeak) error {
 	cBespeak := dbPet.C("bespeak")
 	defer dbPet.Session.Close()
 
-	errPet := cBespeak.Insert(bespeakModel)
+	errPet := cBespeak.Insert(&bespeakModel)
 
 	return errPet
 }
@@ -111,4 +124,27 @@ func EmailLogin(email string, password string) (models.User, error) {
 
 	errUser := cUser.Find(&bsonM).One(&userModel)
 	return userModel, errUser
+}
+
+//GetMyBespeak 获取我的预约
+func GetMyBespeak(openid string) ([]models.FindBespeak, error) {
+	var dbPet = GetDB("Pet")
+	cBespeak := dbPet.C("bespeak")
+
+	var bespeakMode []models.FindBespeak
+
+	var bsonM = bson.M{"openid": openid}
+
+	errPet := cBespeak.Find(bsonM).Sort("-applyDate", "applyTime").Limit(10).All(&bespeakMode)
+	for index := 0; index < len(bespeakMode); index++ {
+		hid := bespeakMode[index].HospitalID
+		hospital, herr := GetAllHospitalByID(hid)
+		if herr != nil {
+			panic(herr)
+		}
+		bespeakMode[index].Hospital = hospital
+
+	}
+
+	return bespeakMode, errPet
 }

@@ -4,11 +4,17 @@ import (
 	"log"
 	"petApi/controllers"
 
+	"petApi/data"
+
 	"github.com/gin-gonic/gin"
 )
 
 //initRouter 初始化路由
 func initRouter() *gin.Engine {
+
+	data.GetOpenId("wxf0e257ada269dd09", "9e45db58aea6e7f61e6dc9a53f35f81a", "071REjr12W4VjX02uep12lVgr12REjrI")
+	//go petglobal.GetAccessTokenTimer("wxf0e257ada269dd09", "9e45db58aea6e7f61e6dc9a53f35f81a", 10)
+	//petglobal.GetAccessToken("wxf0e257ada269dd09", "9e45db58aea6e7f61e6dc9a53f35f81a")
 	router := gin.Default()
 	router.Use(func(c *gin.Context) {
 		c.Header("Access-Control-Allow-Origin", "*")
@@ -32,7 +38,7 @@ func initRouter() *gin.Engine {
 		pet.POST("/emailLogin", controllers.Login)
 		pet.POST("/findBespeakFullcalenar", controllers.FindBespeakFullcalenar)
 		pet.POST("/ValiDateToken", controllers.ValiDateToken)
-
+		pet.POST("/GetMyBespeak", controllers.GetMyBespeak)
 	}
 	//ceshi
 	v1 := router.Group("api/v1")

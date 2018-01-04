@@ -15,6 +15,13 @@ type Hospital struct {
 	State          int           `bson:"state"`
 	Address        string        `bson:"address"`
 	Doctor         []Doctor      `bson:"doctor"`
+	Location       Location      `bson:"location"`
+}
+
+//坐标位置
+type Location struct {
+	Lng float64 `bson:"lng"`
+	Lat float64 `bson:"lat"`
 }
 
 //Department 职位包含doctor数组oid
@@ -49,6 +56,27 @@ type Bespeak struct {
 	DoctorName   string        `bson:"doctorName"`
 	State        int           `bson:"state"`
 	CreateDate   time.Time     `bson:"createDate"`
+	OpenId       string        `bson:"openid"`
+}
+
+//FindBespeak 预约表
+type FindBespeak struct {
+	ID           bson.ObjectId `bson:"_id"`
+	MasterName   string        `bson:"masterName"`
+	PetName      string        `bson:"petName"`
+	Mobile       string        `bson:"mobile"`
+	ApplyDate    string        `bson:"applyDate"`
+	ApplyTime    string        `bson:"applyTime"`
+	HospitalID   string        `bson:"hospitalId"`
+	HospitalName string        `bson:"hospitalName"`
+	DepID        string        `bson:"depId"`
+	DepName      string        `bson:"depName"`
+	DoctorID     string        `bson:"doctorId"`
+	DoctorName   string        `bson:"doctorName"`
+	State        int           `bson:"state"`
+	CreateDate   time.Time     `bson:"createDate"`
+	OpenId       string        `bson:"openid"`
+	Hospital     Hospital
 }
 
 // "_id" : ObjectId("5a1cc2be080e9befff6bcbec"),
